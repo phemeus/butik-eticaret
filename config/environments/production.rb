@@ -3,7 +3,7 @@ require "active_support/core_ext/integer/time"
 # Render varsayilan build'i env'siz assets:precompile calistirir; dummy key gerekir.
 BUILD_TIME_SECRET_KEY_BASE = "0000000000000000000000000000000000000000000000000000000000000000"
 
-compiling_assets = defined?(Rake) && Rake.application.top_level_tasks.any? { |task| task.start_with?("assets:") }
+compiling_assets = ARGV.any? { |arg| arg.start_with?("assets:") }
 
 Rails.application.configure do
   if ENV["SECRET_KEY_BASE"].present?
@@ -21,6 +21,8 @@ Rails.application.configure do
   config.active_storage.default_url_options = { host: ENV.fetch("APP_HOST", "example.com"), protocol: "https" }
   config.hosts << ENV["APP_HOST"] if ENV["APP_HOST"].present?
   config.hosts << ENV["RENDER_EXTERNAL_HOSTNAME"] if ENV["RENDER_EXTERNAL_HOSTNAME"].present?
+  config.hosts << /.*\.onrender\.com\z/
+  config.host_authorization = { exclude: ->(request) { request.path == "/up" } }
   config.force_ssl = true
   config.public_file_server.headers = { "cache-control" => "public, max-age=#{1.year.to_i}" }
   config.active_storage.service = :local

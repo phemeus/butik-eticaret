@@ -7,7 +7,3 @@ export DISABLE_DATABASE_ENVIRONMENT_CHECK=1
 
 bundle install
 bundle exec rails assets:precompile
-
-# Free plan'de preDeployCommand çalışmaz; migration/seed build'de yapılır.
-bundle exec rails db:prepare
-bundle exec rails db:seed

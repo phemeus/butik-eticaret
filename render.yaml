@@ -14,7 +14,7 @@ services:
     plan: free
     runtime: ruby
     buildCommand: "SECRET_KEY_BASE_DUMMY=1 DISABLE_DATABASE_ENVIRONMENT_CHECK=1 ./bin/render-build.sh"
-    startCommand: "bundle exec puma -C config/puma.rb"
+    startCommand: "./bin/render-start.sh"
     healthCheckPath: /up
     envVars:
       - key: RAILS_ENV
