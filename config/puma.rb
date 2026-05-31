@@ -6,4 +6,11 @@ port ENV.fetch("PORT") { 3000 }
 environment ENV.fetch("RAILS_ENV") { "development" }
 pidfile ENV.fetch("PIDFILE") { "tmp/pids/server.pid" }
 
+# Free tier: tek process (cluster mode bellek tüketir).
+web_concurrency = ENV.fetch("WEB_CONCURRENCY", 1).to_i
+if web_concurrency > 1
+  workers web_concurrency
+  preload_app!
+end
+
 plugin :tmp_restart

@@ -10,7 +10,7 @@ databases:
 
 services:
   - type: web
-    name: butik-web
+    name: butik-eticaret
     plan: free
     runtime: ruby
     buildCommand: "SECRET_KEY_BASE_DUMMY=1 DISABLE_DATABASE_ENVIRONMENT_CHECK=1 ./bin/render-build.sh"
@@ -34,5 +34,5 @@ services:
       - key: APP_HOST
         fromService:
           type: web
-          name: butik-web
+          name: butik-eticaret
           property: host
