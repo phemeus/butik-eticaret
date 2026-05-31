@@ -2,6 +2,9 @@
 # Dashboard: New > Blueprint > repo bağla
 # veya servisleri tek tek oluşturup env'leri kendin gir.
 
+# Postgres: Dashboard'daki butik_db_isgb — Internal URL -> DATABASE_URL env.
+# (Asagidaki butik-db blueprint icindir; manuel serviste Environment'tan DATABASE_URL gir.)
+
 databases:
   - name: butik-db
     plan: free
@@ -26,9 +29,7 @@ services:
       - key: WEB_CONCURRENCY
         value: "1"
       - key: DATABASE_URL
-        fromDatabase:
-          name: butik-db
-          property: connectionString
+        sync: false
       - key: RAILS_MASTER_KEY
         value: "037da71d8629692af76e1ca4da00a4f3"
       - key: SECRET_KEY_BASE
