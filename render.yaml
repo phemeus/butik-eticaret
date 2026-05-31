@@ -13,7 +13,7 @@ services:
     name: butik-web
     plan: free
     runtime: ruby
-    buildCommand: "./bin/render-build.sh"
+    buildCommand: "SECRET_KEY_BASE_DUMMY=1 DISABLE_DATABASE_ENVIRONMENT_CHECK=1 ./bin/render-build.sh"
     startCommand: "bundle exec puma -C config/puma.rb"
     healthCheckPath: /up
     envVars:

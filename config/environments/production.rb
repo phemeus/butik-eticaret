@@ -1,6 +1,17 @@
 require "active_support/core_ext/integer/time"
 
+# Render varsayilan build'i env'siz assets:precompile calistirir; dummy key gerekir.
+BUILD_TIME_SECRET_KEY_BASE = "0000000000000000000000000000000000000000000000000000000000000000"
+
+compiling_assets = defined?(Rake) && Rake.application.top_level_tasks.any? { |task| task.start_with?("assets:") }
+
 Rails.application.configure do
+  if ENV["SECRET_KEY_BASE"].present?
+    config.secret_key_base = ENV["SECRET_KEY_BASE"]
+  elsif ENV["SECRET_KEY_BASE_DUMMY"].present? || compiling_assets
+    config.secret_key_base = BUILD_TIME_SECRET_KEY_BASE
+  end
+
   config.enable_reloading = false
   config.eager_load = true
   config.consider_all_requests_local = false
