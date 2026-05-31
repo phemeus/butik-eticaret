@@ -21,4 +21,9 @@ test:
 
 production:
   <<: *default
+  <% if ENV["DATABASE_URL"].present? %>
   url: <%= ENV["DATABASE_URL"] %>
+  <% else %>
+  # Build asamasinda DATABASE_URL gerekmez; runtime'da Environment'tan gelir.
+  url: postgres://build:build@127.0.0.1:5432/build
+  <% end %>
