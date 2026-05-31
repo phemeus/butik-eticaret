@@ -5,6 +5,7 @@ Rails.application.configure do
   config.eager_load = true
   config.consider_all_requests_local = false
   config.action_controller.perform_caching = true
+  config.cache_store = :memory_store
   config.action_controller.default_url_options = { host: ENV.fetch("APP_HOST", "example.com"), protocol: "https" }
   config.active_storage.default_url_options = { host: ENV.fetch("APP_HOST", "example.com"), protocol: "https" }
   config.hosts << ENV["APP_HOST"] if ENV["APP_HOST"].present?
