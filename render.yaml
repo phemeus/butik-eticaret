@@ -30,7 +30,9 @@ services:
           name: butik-db
           property: connectionString
       - key: RAILS_MASTER_KEY
-        sync: false
+        value: "037da71d8629692af76e1ca4da00a4f3"
+      - key: SECRET_KEY_BASE
+        generateValue: true
       - key: APP_HOST
         fromService:
           type: web
