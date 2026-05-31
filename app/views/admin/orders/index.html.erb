@@ -1,0 +1,43 @@
+<% content_for :title, "Siparişler" %>
+
+<%= render "admin/shared/page_header", title: "Siparişler", subtitle: "#{@orders.size} sipariş" %>
+
+<div class="admin-card admin-card--flush">
+  <% if @orders.any? %>
+    <div class="table-responsive">
+      <table class="admin-table">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Müşteri</th>
+            <th>Tarih</th>
+            <th>Durum</th>
+            <th>Ödeme</th>
+            <th>Toplam</th>
+            <th class="text-end">İşlem</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @orders.each do |order| %>
+            <tr>
+              <td class="fw-medium">#<%= order.id %></td>
+              <td><%= order.user.email_address %></td>
+              <td class="text-muted"><%= l(order.created_at, format: :short) %></td>
+              <td><%= order_status_badge(order.status) %></td>
+              <td><%= payment_status_badge(order.payment.status) %></td>
+              <td class="fw-medium"><%= format_price(order.total_cents) %></td>
+              <td class="text-end">
+                <%= link_to "Detay", admin_order_path(order), class: "btn btn-admin-outline btn-sm" %>
+              </td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+  <% else %>
+    <div class="admin-empty">
+      <i class="bi bi-receipt d-block" aria-hidden="true"></i>
+      <p class="mb-0">Henüz sipariş yok.</p>
+    </div>
+  <% end %>
+</div>

@@ -1,0 +1,14 @@
+<%# locals: title:, subtitle: nil %>
+<div class="admin-page-header">
+  <div>
+    <h1 class="admin-page-header__title"><%= title %></h1>
+    <% if local_assigns[:subtitle] %>
+      <p class="admin-page-header__subtitle"><%= subtitle %></p>
+    <% end %>
+  </div>
+  <% if block_given? %>
+    <div class="admin-page-header__actions">
+      <%= yield %>
+    </div>
+  <% end %>
+</div>

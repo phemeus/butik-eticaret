@@ -1,0 +1,140 @@
+<% content_for :title, "Ana Sayfa" %>
+<% content_for :meta_description, "Yeni sezon butik moda koleksiyonu. Premium parçalar, hızlı kargo ve kolay iade." %>
+
+<%# ── HERO ── %>
+<section class="sf-hero" aria-labelledby="hero-title">
+  <div class="sf-hero__media" aria-hidden="true">
+    <% if site_settings.hero_image.attached? %>
+      <%= attachment_image_tag site_settings.hero_image, resize: [ 1920, 900 ], resize_mode: :limit, alt: "" %>
+    <% end %>
+  </div>
+  <div class="sf-hero__overlay" aria-hidden="true"></div>
+  <div class="container-store w-100">
+    <div class="sf-hero__content">
+      <p class="sf-hero__eyebrow"><%= site_settings.hero_eyebrow %></p>
+      <h1 id="hero-title" class="sf-hero__title"><%= site_settings.hero_title %></h1>
+      <p class="sf-hero__desc"><%= site_settings.hero_description %></p>
+      <div class="d-flex flex-wrap gap-3">
+        <%= link_to "Koleksiyonu Keşfet", products_path, class: "btn btn-sf-primary btn-lg" %>
+        <%= link_to "Yeni Gelenler", products_path(sort: "new"), class: "btn btn-outline-light btn-lg" %>
+      </div>
+    </div>
+  </div>
+</section>
+
+<%# ── TRUST BAR ── %>
+<%= render "shared/storefront/trust_bar" %>
+
+<%# ── YENİ GELENLER ── %>
+<section class="sf-section container-store" aria-labelledby="new-arrivals-title">
+  <%= render "shared/storefront/section_header",
+        title: "Yeni Gelenler",
+        subtitle: "Koleksiyon",
+        link_text: "Tümünü Gör",
+        link_path: products_path(sort: "new") %>
+  <div class="sf-product-scroll sf-product-scroll--wide">
+    <% @new_arrivals.each do |product| %>
+      <%= render "shared/storefront/product_card", product: product %>
+    <% end %>
+  </div>
+  <% if @new_arrivals.empty? %>
+    <p class="sf-text-muted">Yakında yeni ürünler eklenecek.</p>
+  <% end %>
+</section>
+
+<%# ── KAMPANYA BANNERLARI ── %>
+<section class="sf-section sf-section--alt" aria-label="Kampanyalar">
+  <div class="container-store">
+    <div class="sf-promo-grid">
+      <%= link_to products_path, class: "sf-promo sf-promo--dark" do %>
+        <span class="sf-promo__label">Sezon Sonu</span>
+        <span class="sf-promo__title">Seçili parçalarda<br>%30'a varan indirim</span>
+        <span class="btn btn-sm btn-outline-light">Keşfet</span>
+      <% end %>
+      <%= link_to categories_path, class: "sf-promo" do %>
+        <span class="sf-promo__label">Kadın</span>
+        <span class="sf-promo__title">Elbise &amp; Üst Giyim</span>
+        <span class="btn btn-sm btn-sf-outline">Alışverişe Başla</span>
+      <% end %>
+      <%= link_to products_path, class: "sf-promo" do %>
+        <span class="sf-promo__label">Erkek</span>
+        <span class="sf-promo__title">Günlük Şıklık</span>
+        <span class="btn btn-sm btn-sf-outline">Koleksiyon</span>
+      <% end %>
+    </div>
+  </div>
+</section>
+
+<%# ── ÖNE ÇIKANLAR ── %>
+<section class="sf-section container-store" aria-labelledby="featured-title">
+  <%= render "shared/storefront/section_header",
+        title: "Editörün Seçtikleri",
+        subtitle: "Öne Çıkanlar",
+        link_text: "Tüm Ürünler",
+        link_path: products_path(sort: "featured") %>
+  <% if @featured_products.any? %>
+  <div class="row g-4">
+    <% @featured_products.each do |product| %>
+      <div class="col-6 col-md-3">
+        <%= render "shared/storefront/product_card", product: product %>
+      </div>
+    <% end %>
+  </div>
+  <% else %>
+    <p class="sf-text-muted">Admin panelden ürünleri "Öne çıkar" olarak işaretleyebilirsiniz.</p>
+  <% end %>
+</section>
+
+<%# ── KATEGORİ BLOKLARI ── %>
+<section class="sf-section sf-section--alt" aria-labelledby="categories-title">
+  <div class="container-store">
+    <%= render "shared/storefront/section_header",
+          title: "Kategorilere Göz At",
+          subtitle: "Keşfet" %>
+    <div class="row g-4">
+      <% @categories.first(4).each do |category| %>
+        <div class="col-6 col-md-3">
+          <%= link_to category_path(category), class: "sf-cat-tile" do %>
+            <%= category_image(category) %>
+            <div class="sf-cat-tile__overlay"></div>
+            <span class="sf-cat-tile__name"><%= category.name %></span>
+          <% end %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</section>
+
+<%# ── POPÜLER / ÇOK SATANLAR ── %>
+<section class="sf-section container-store" aria-labelledby="popular-title">
+  <%= render "shared/storefront/section_header",
+        title: "Çok Satanlar",
+        subtitle: "Popüler",
+        link_text: "Hepsini Gör",
+        link_path: products_path %>
+  <div class="row g-4">
+    <% @popular_products.first(4).each do |product| %>
+      <div class="col-6 col-md-3">
+        <%= render "shared/storefront/product_card", product: product %>
+      </div>
+    <% end %>
+  </div>
+</section>
+
+<%# ── CTA BAND ── %>
+<section class="sf-section sf-section--alt" aria-label="Üyelik daveti">
+  <div class="container-store">
+    <div class="text-center py-4 py-md-5 px-3">
+      <p class="sf-text-soft text-uppercase mb-2" style="letter-spacing:0.12em">Bülten</p>
+      <h2 class="sf-display sf-title-md mb-3"><%= site_settings.newsletter_title %></h2>
+      <p class="sf-text-muted mx-auto mb-4" style="max-width:28rem">
+        <%= site_settings.newsletter_body %>
+      </p>
+      <% unless authenticated? %>
+        <%= link_to "Ücretsiz Kayıt Ol", new_registration_path, class: "btn btn-sf-primary btn-lg" %>
+      <% else %>
+        <%= link_to "Alışverişe Devam Et", products_path, class: "btn btn-sf-primary btn-lg" %>
+      <% end %>
+    </div>
+  </div>
+</section>

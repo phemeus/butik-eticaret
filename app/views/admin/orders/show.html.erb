@@ -1,0 +1,70 @@
+<% content_for :title, "Sipariş ##{@order.id}" %>
+
+<%= render "admin/shared/page_header",
+      title: "Sipariş ##{@order.id}",
+      subtitle: "#{@order.user.email_address} · #{l(@order.created_at, format: :long)}" %>
+
+<div class="row g-4">
+  <div class="col-lg-8">
+    <div class="admin-card admin-card--flush">
+      <div class="admin-card__header">Sipariş Kalemleri</div>
+      <div class="table-responsive">
+        <table class="admin-table">
+          <thead>
+            <tr>
+              <th>Ürün</th>
+              <th>Varyant</th>
+              <th>Adet</th>
+              <th>Birim</th>
+              <th>Toplam</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% @order.order_items.each do |item| %>
+              <tr>
+                <td class="fw-medium"><%= item.product_name %></td>
+                <td><%= item.variant_label %></td>
+                <td><%= item.quantity %></td>
+                <td><%= format_price(item.unit_price_cents) %></td>
+                <td class="fw-medium"><%= format_price(item.line_total_cents) %></td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-lg-4">
+    <div class="admin-card">
+      <div class="admin-card__header">Sipariş Özeti</div>
+      <div class="admin-card__body">
+        <dl class="row mb-0 small">
+          <dt class="col-5 text-muted">Ara Toplam</dt>
+          <dd class="col-7 text-end"><%= format_price(@order.subtotal_cents) %></dd>
+          <dt class="col-5 text-muted">Genel Toplam</dt>
+          <dd class="col-7 text-end fw-bold fs-5"><%= format_price(@order.total_cents) %></dd>
+          <dt class="col-5 text-muted">Ödeme</dt>
+          <dd class="col-7 text-end"><%= payment_status_badge(@order.payment.status) %></dd>
+        </dl>
+        <hr>
+        <%= form_with model: @order, url: admin_order_path(@order), method: :patch do |f| %>
+          <div class="mb-3">
+            <%= f.label :status, "Sipariş Durumu", class: "form-label" %>
+            <%= f.select :status, Order.statuses.keys.map { |s| [I18n.t("activerecord.attributes.order.status.#{s}"), s] }, {}, class: "form-select" %>
+          </div>
+          <%= f.submit "Durumu Güncelle", class: "btn btn-admin-primary w-100" %>
+        <% end %>
+      </div>
+    </div>
+
+    <div class="admin-card mt-3">
+      <div class="admin-card__header">Teslimat Adresi</div>
+      <div class="admin-card__body small">
+        <p class="fw-medium mb-1"><%= @order.address.full_name %></p>
+        <p class="text-muted mb-1"><%= @order.address.phone %></p>
+        <p class="mb-0"><%= @order.address.address_line %><br><%= @order.address.district %> / <%= @order.address.city %></p>
+      </div>
+    </div>
+  </div>
+</div>

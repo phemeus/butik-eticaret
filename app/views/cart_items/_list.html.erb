@@ -1,0 +1,66 @@
+<% if cart_items.any? %>
+  <div class="table-responsive bg-white rounded shadow-sm">
+    <table class="table align-middle mb-0">
+      <thead>
+        <tr>
+          <th>Ürün</th>
+          <th>Varyant</th>
+          <th>Fiyat</th>
+          <th>Adet</th>
+          <th>Toplam</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody id="cart_items">
+        <%= render cart_items %>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="row g-4 mt-2">
+    <div class="col-md-6">
+      <div class="card border-0 shadow-sm">
+        <div class="card-body">
+          <h2 class="h6 mb-3">Kupon Kodu</h2>
+          <% if cart.coupon %>
+            <p class="mb-2">
+              <code><%= cart.coupon.code %></code>
+              <span class="text-muted small">— <%= cart.coupon.label %></span>
+            </p>
+            <%= button_to "Kuponu Kaldır", remove_coupon_cart_path, method: :delete, class: "btn btn-sm btn-outline-secondary" %>
+          <% else %>
+            <%= form_with url: apply_coupon_cart_path, method: :post, class: "d-flex gap-2" do %>
+              <%= text_field_tag :code, nil, class: "form-control form-control-sm text-uppercase", placeholder: "KUPONKODU", required: true %>
+              <%= submit_tag "Uygula", class: "btn btn-sm btn-dark" %>
+            <% end %>
+          <% end %>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-6">
+      <div class="card border-0 shadow-sm">
+        <div class="card-body">
+          <div class="d-flex justify-content-between mb-1">
+            <span class="text-muted">Ara toplam</span>
+            <span><%= format_price(cart.subtotal_cents) %></span>
+          </div>
+          <% if cart.discount_cents.positive? %>
+            <div class="d-flex justify-content-between mb-1 text-success">
+              <span>İndirim</span>
+              <span>-<%= format_price(cart.discount_cents) %></span>
+            </div>
+          <% end %>
+          <div class="d-flex justify-content-between fs-5 fw-semibold mt-2 pt-2 border-top">
+            <span>Toplam</span>
+            <span><%= format_price(cart.total_cents) %></span>
+          </div>
+          <%= link_to "Siparişi Tamamla", new_order_path, class: "btn btn-dark w-100 mt-3" %>
+        </div>
+      </div>
+    </div>
+  </div>
+<% else %>
+  <p class="text-muted">Sepetiniz boş.</p>
+  <%= link_to "Alışverişe devam et", products_path, class: "btn btn-outline-dark" %>
+<% end %>

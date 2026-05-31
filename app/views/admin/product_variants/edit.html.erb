@@ -1,0 +1,9 @@
+<% content_for :title, "Varyant Düzenle" %>
+
+<%= render "admin/shared/page_header", title: "Varyant Düzenle", subtitle: @product.name %>
+
+<div class="admin-card admin-form-card">
+  <div class="admin-card__body">
+    <%= render "form", product: @product, variant: @variant %>
+  </div>
+</div>

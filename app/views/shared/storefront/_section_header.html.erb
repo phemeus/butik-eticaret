@@ -1,0 +1,12 @@
+<%# locals: title:, subtitle: nil, link_text: nil, link_path: nil %>
+<div class="sf-section__header">
+  <div>
+    <% if local_assigns[:subtitle] %>
+      <p class="sf-text-soft text-uppercase mb-1" style="letter-spacing:0.1em"><%= subtitle %></p>
+    <% end %>
+    <h2 class="sf-display sf-title-md mb-0"><%= title %></h2>
+  </div>
+  <% if local_assigns[:link_text] && local_assigns[:link_path] %>
+    <%= link_to link_text, link_path, class: "sf-section__link" %>
+  <% end %>
+</div>

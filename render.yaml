@@ -1,0 +1,38 @@
+# Render Blueprint — test deploy
+# Dashboard: New > Blueprint > repo bağla
+# veya servisleri tek tek oluşturup env'leri kendin gir.
+
+databases:
+  - name: butik-db
+    plan: free
+    databaseName: butik_eticaret_production
+    user: butik
+
+services:
+  - type: web
+    name: butik-web
+    plan: free
+    runtime: ruby
+    buildCommand: "./bin/render-build.sh"
+    startCommand: "bundle exec puma -C config/puma.rb"
+    healthCheckPath: /up
+    envVars:
+      - key: RAILS_ENV
+        value: production
+      - key: RAILS_LOG_TO_STDOUT
+        value: "true"
+      - key: RAILS_SERVE_STATIC_FILES
+        value: "true"
+      - key: WEB_CONCURRENCY
+        value: "1"
+      - key: DATABASE_URL
+        fromDatabase:
+          name: butik-db
+          property: connectionString
+      - key: SECRET_KEY_BASE
+        generateValue: true
+      - key: APP_HOST
+        fromService:
+          type: web
+          name: butik-web
+          property: host

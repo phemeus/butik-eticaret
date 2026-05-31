@@ -1,0 +1,51 @@
+<h1 class="h2 mb-1">Sipariş #<%= @order.id %></h1>
+<p class="text-muted mb-4"><%= l(@order.created_at, format: :long) %></p>
+
+<div class="row g-4">
+  <div class="col-md-8">
+    <div class="card border-0 shadow-sm mb-4">
+      <div class="card-body">
+        <h2 class="h5">Ürünler</h2>
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Ürün</th>
+              <th>Varyant</th>
+              <th>Adet</th>
+              <th>Birim</th>
+              <th>Toplam</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% @order.order_items.each do |item| %>
+              <tr>
+                <td><%= item.product_name %></td>
+                <td><%= item.variant_label %></td>
+                <td><%= item.quantity %></td>
+                <td><%= format_price(item.unit_price_cents) %></td>
+                <td><%= format_price(item.line_total_cents) %></td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-4">
+    <div class="card border-0 shadow-sm">
+      <div class="card-body">
+        <p><strong>Durum:</strong> <%= order_status_badge(@order.status) %></p>
+        <p><strong>Ödeme:</strong> <%= payment_status_badge(@order.payment.status) %></p>
+        <p><strong>Toplam:</strong> <%= format_price(@order.total_cents) %></p>
+        <hr>
+        <p class="mb-1"><strong>Teslimat</strong></p>
+        <p class="small text-muted mb-0">
+          <%= @order.address.full_name %><br>
+          <%= @order.address.address_line %><br>
+          <%= @order.address.district %> / <%= @order.address.city %>
+        </p>
+      </div>
+    </div>
+  </div>
+</div>

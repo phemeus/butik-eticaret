@@ -1,0 +1,57 @@
+<h1 class="h2 mb-4">Siparişi Tamamla</h1>
+
+<div class="row g-4">
+  <div class="col-md-7">
+    <div class="card border-0 shadow-sm">
+      <div class="card-body">
+        <h2 class="h5">Teslimat Adresi</h2>
+
+        <% if @addresses.any? %>
+          <%= form_with url: orders_path, method: :post do %>
+            <% @addresses.each do |address| %>
+              <div class="form-check mb-2">
+                <%= radio_button_tag :address_id, address.id, @addresses.first == address, class: "form-check-input", id: "address_#{address.id}" %>
+                <label class="form-check-label" for="address_<%= address.id %>">
+                  <strong><%= address.title %></strong><br>
+                  <%= address.full_name %> — <%= address.phone %><br>
+                  <%= address.address_line %>, <%= address.district %>/<%= address.city %>
+                </label>
+              </div>
+            <% end %>
+
+            <div class="mb-3 mt-3">
+              <label class="form-label">Sipariş Notu (opsiyonel)</label>
+              <%= text_area_tag :notes, nil, class: "form-control", rows: 3 %>
+            </div>
+
+            <%= submit_tag "Siparişi Onayla", class: "btn btn-dark" %>
+          <% end %>
+        <% else %>
+          <p class="text-muted">Sipariş vermek için önce adres eklemelisiniz.</p>
+          <%= link_to "Adres Ekle", new_address_path, class: "btn btn-outline-dark" %>
+        <% end %>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-5">
+    <div class="card border-0 shadow-sm">
+      <div class="card-body">
+        <h2 class="h5">Özet</h2>
+        <p class="mb-1"><%= @cart.item_count %> ürün</p>
+        <div class="d-flex justify-content-between small text-muted">
+          <span>Ara toplam</span>
+          <span><%= format_price(@cart.subtotal_cents) %></span>
+        </div>
+        <% if @cart.discount_cents.positive? %>
+          <div class="d-flex justify-content-between small text-success mb-1">
+            <span>Kupon (<%= @cart.coupon.code %>)</span>
+            <span>-<%= format_price(@cart.discount_cents) %></span>
+          </div>
+        <% end %>
+        <p class="fs-5 fw-semibold mt-2 mb-0"><%= format_price(@cart.total_cents) %></p>
+        <p class="small text-muted mb-0 mt-2">Ödeme entegrasyonu sonraki aşamada eklenecek.</p>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,66 @@
+<header class="sf-header" role="banner">
+  <div class="container-store sf-header__inner">
+    <%= link_to site_settings.site_name.upcase, root_path, class: "sf-logo", aria: { label: "Ana sayfa" } %>
+
+    <div class="sf-search sf-search--desktop d-none d-md-block">
+      <%= form_with url: products_path, method: :get, role: "search", class: "input-group" do %>
+        <%= label_tag :q, "Ürün ara", class: "visually-hidden" %>
+        <%= text_field_tag :q, params[:q], class: "form-control", placeholder: "Elbise, bluz, aksesuar ara...", autocomplete: "off" %>
+        <button type="submit" class="btn" aria-label="Ara">
+          <i class="bi bi-search" aria-hidden="true"></i>
+        </button>
+      <% end %>
+    </div>
+
+    <div class="sf-header__actions">
+      <% if authenticated? %>
+        <div class="dropdown d-none d-lg-block">
+          <button class="sf-header__action dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+            <i class="bi bi-person" aria-hidden="true"></i>
+            <span>Hesabım</span>
+          </button>
+          <ul class="dropdown-menu dropdown-menu-end shadow-sm border-0">
+            <li><%= link_to "Siparişlerim", orders_path, class: "dropdown-item" %></li>
+            <li><%= link_to "Adreslerim", addresses_path, class: "dropdown-item" %></li>
+            <% if Current.user.admin? %>
+              <li><hr class="dropdown-divider"></li>
+              <li><%= link_to "Admin Panel", admin_root_path, class: "dropdown-item" %></li>
+            <% end %>
+            <li><hr class="dropdown-divider"></li>
+            <li><%= button_to "Çıkış Yap", session_path, method: :delete, class: "dropdown-item text-danger" %></li>
+          </ul>
+        </div>
+        <%= link_to orders_path, class: "sf-header__action d-lg-none", aria: { label: "Hesabım" } do %>
+          <i class="bi bi-person" aria-hidden="true"></i>
+        <% end %>
+      <% else %>
+        <%= link_to new_session_path, class: "sf-header__action", aria: { label: "Giriş yap" } do %>
+          <i class="bi bi-person" aria-hidden="true"></i>
+          <span class="d-none d-lg-inline">Giriş</span>
+        <% end %>
+      <% end %>
+
+      <button type="button" class="sf-header__action d-none d-md-flex" aria-label="Favorilerim (yakında)" disabled>
+        <i class="bi bi-heart" aria-hidden="true"></i>
+        <span class="d-none d-lg-inline">Favoriler</span>
+      </button>
+
+      <%= link_to cart_path, class: "sf-header__action", aria: { label: "Sepet" } do %>
+        <i class="bi bi-bag" aria-hidden="true"></i>
+        <span class="d-none d-lg-inline">Sepet</span>
+        <% if authenticated? && current_cart&.item_count.to_i > 0 %>
+          <span class="sf-header__badge"><%= current_cart.item_count %></span>
+        <% end %>
+      <% end %>
+    </div>
+  </div>
+
+  <div class="sf-search-mobile d-md-none">
+    <%= form_with url: products_path, method: :get, role: "search", class: "input-group container-store px-0" do %>
+      <%= text_field_tag :q, params[:q], class: "form-control", placeholder: "Ne aramıştınız?", aria: { label: "Ürün ara" } %>
+      <button type="submit" class="btn btn-sf-primary" aria-label="Ara">
+        <i class="bi bi-search" aria-hidden="true"></i>
+      </button>
+    <% end %>
+  </div>
+</header>

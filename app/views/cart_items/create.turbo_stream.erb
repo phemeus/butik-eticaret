@@ -1,0 +1,3 @@
+<%= turbo_stream.replace "cart" do %>
+  <%= render "cart_items/list", cart: @cart, cart_items: @cart.cart_items.includes(product_variant: :product) %>
+<% end %>

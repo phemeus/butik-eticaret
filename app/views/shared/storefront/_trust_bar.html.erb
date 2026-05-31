@@ -1,0 +1,15 @@
+<% if @trust_blocks.any? %>
+  <section class="sf-trust container-store" aria-label="Alışveriş avantajları">
+    <% @trust_blocks.each do |block| %>
+      <div class="sf-trust__item">
+        <i class="bi bi-<%= block.icon %>" aria-hidden="true"></i>
+        <div>
+          <p class="sf-trust__title mb-0"><%= block.title %></p>
+          <% if block.body.present? %>
+            <p class="sf-trust__desc"><%= block.body %></p>
+          <% end %>
+        </div>
+      </div>
+    <% end %>
+  </section>
+<% end %>

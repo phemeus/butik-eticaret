@@ -1,0 +1,52 @@
+<% content_for :title, "Kategoriler" %>
+
+<%= render "admin/shared/page_header", title: "Kategoriler", subtitle: "#{@categories.size} kategori" do %>
+  <%= link_to new_admin_category_path, class: "btn btn-admin-primary" do %>
+    <i class="bi bi-plus-lg me-1" aria-hidden="true"></i> Yeni Kategori
+  <% end %>
+<% end %>
+
+<div class="admin-card admin-card--flush">
+  <% if @categories.any? %>
+    <div class="table-responsive">
+      <table class="admin-table">
+        <thead>
+          <tr>
+            <th>Ad</th>
+            <th>Slug</th>
+            <th>Görsel</th>
+            <th>Ürün Sayısı</th>
+            <th class="text-end">İşlem</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @categories.each do |category| %>
+            <tr>
+              <td class="fw-medium">
+                <%= category.name %>
+              </td>
+              <td><code class="small text-muted"><%= category.slug %></code></td>
+              <td>
+                <% if category.image.attached? %>
+                  <%= attachment_image_tag category.image, resize: [40, 50], alt: category.name, class: "rounded border" %>
+                <% else %>
+                  <span class="text-muted small">—</span>
+                <% end %>
+              </td>
+              <td><%= category.products.count %></td>
+              <td class="text-end">
+                <%= link_to "Düzenle", edit_admin_category_path(category.id), class: "btn btn-admin-outline btn-sm" %>
+                <%= button_to "Sil", admin_category_path(category.id), method: :delete, class: "btn btn-admin-ghost btn-sm text-danger", form: { data: { turbo_confirm: "Kategori silinsin mi?" } } %>
+              </td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+  <% else %>
+    <div class="admin-empty">
+      <p class="mb-2">Henüz kategori yok.</p>
+      <%= link_to "Kategori ekle", new_admin_category_path, class: "btn btn-admin-primary btn-sm" %>
+    </div>
+  <% end %>
+</div>

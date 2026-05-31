@@ -1,0 +1,39 @@
+<nav class="pdp__breadcrumb small mb-3" aria-label="Konum">
+  <%= link_to "Ana Sayfa", root_path, class: "text-muted text-decoration-none" %>
+  <span class="text-muted mx-1">/</span>
+  <%= link_to @product.category.name, category_path(@product.category), class: "text-muted text-decoration-none" %>
+  <span class="text-muted mx-1">/</span>
+  <span class="text-body"><%= @product.name %></span>
+</nav>
+
+<p class="text-muted small mb-1"><%= @product.category.name %></p>
+<h1 class="pdp__title"><%= @product.name %></h1>
+<p class="pdp__price"><%= format_price(@product.price_cents) %></p>
+
+<% if @product.description.present? %>
+  <div class="pdp__description text-muted"><%= simple_format(@product.description) %></div>
+<% end %>
+
+<% if authenticated? && @product.in_stock? %>
+  <%= form_with url: cart_cart_items_path, class: "pdp__buy-form mt-4" do %>
+    <div class="mb-3">
+      <label class="form-label">Varyant</label>
+      <%= select_tag :product_variant_id,
+            options_from_collection_for_select(@product.product_variants.select { |v| v.stock.positive? }, :id, ->(v) { "#{v.label} — Stok: #{v.stock}" }),
+            class: "form-select" %>
+    </div>
+    <div class="mb-3">
+      <label class="form-label">Adet</label>
+      <%= number_field_tag :quantity, 1, min: 1, class: "form-control pdp__qty" %>
+    </div>
+    <%= submit_tag "Sepete Ekle", class: "btn btn-sf-primary btn-lg w-100 w-md-auto" %>
+  <% end %>
+<% elsif !authenticated? && @product.in_stock? %>
+  <p class="mt-4">
+    <%= link_to "Sepete eklemek için giriş yapın", new_session_path, class: "btn btn-sf-outline" %>
+  </p>
+<% else %>
+  <p class="text-muted mt-4">Seçili varyantlar şu an stokta değil.</p>
+<% end %>
+
+<%= render "shared/storefront/stock_notify", product: @product %>

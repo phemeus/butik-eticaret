@@ -1,0 +1,10 @@
+<% if flash.any? %>
+  <div class="mb-3" role="status" aria-live="polite">
+    <% flash.each do |type, message| %>
+      <div class="alert alert-<%= type == "notice" ? "success" : "danger" %> alert-dismissible fade show border-0" role="alert">
+        <%= message %>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Kapat"></button>
+      </div>
+    <% end %>
+  </div>
+<% end %>

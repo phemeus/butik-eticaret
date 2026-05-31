@@ -1,0 +1,29 @@
+<% content_for :title, @product.seo_title %>
+<% content_for :meta_description, @product.seo_description %>
+
+<% gallery_layout = site_settings.full_width? ? :full_width : :sidebar %>
+
+<% if site_settings.full_width? %>
+  <article class="pdp pdp--full">
+    <section class="pdp__gallery-band" aria-label="<%= @product.name %> görselleri">
+      <%= render "shared/storefront/product_gallery", product: @product, layout: gallery_layout %>
+    </section>
+
+    <div class="container-store pdp__content">
+      <%= render "products/show_details" %>
+    </div>
+  </article>
+<% else %>
+  <article class="pdp pdp--sidebar">
+    <div class="container-store pdp__content">
+      <div class="row g-4 g-lg-5 align-items-start">
+        <div class="col-lg-5">
+          <%= render "shared/storefront/product_gallery", product: @product, layout: gallery_layout %>
+        </div>
+        <div class="col-lg-7">
+          <%= render "products/show_details" %>
+        </div>
+      </div>
+    </div>
+  </article>
+<% end %>

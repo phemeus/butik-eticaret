@@ -1,0 +1,70 @@
+<% content_for :title, @product.name %>
+
+<%= render "admin/shared/page_header", title: @product.name, subtitle: "#{@product.category.name} · #{format_price(@product.price_cents)}" do %>
+  <%= link_to "Düzenle", edit_admin_product_path(@product.id), class: "btn btn-admin-outline" %>
+  <%= link_to new_admin_product_product_variant_path(@product.id), class: "btn btn-admin-primary" do %>
+    <i class="bi bi-plus-lg me-1" aria-hidden="true"></i> Varyant Ekle
+  <% end %>
+<% end %>
+
+<% if @product.images.attached? %>
+  <div class="admin-card mb-4">
+    <div class="admin-card__header">Görseller</div>
+    <div class="admin-card__body">
+      <div class="admin-image-grid">
+        <% @product.images.each do |image| %>
+          <%= attachment_image_tag image, resize: [ 200, 200 ], resize_mode: :limit, alt: @product.name, class: "rounded border" %>
+        <% end %>
+      </div>
+    </div>
+  </div>
+<% end %>
+
+<div class="admin-card admin-card--flush">
+  <div class="admin-card__header d-flex justify-content-between align-items-center">
+    <span>Varyantlar</span>
+    <span class="badge bg-light text-dark"><%= @product.product_variants.count %></span>
+  </div>
+  <% if @product.product_variants.any? %>
+    <div class="table-responsive">
+      <table class="admin-table">
+        <thead>
+          <tr>
+            <th>SKU</th>
+            <th>Renk</th>
+            <th>Beden</th>
+            <th>Stok</th>
+            <th>Fiyat</th>
+            <th class="text-end">İşlem</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @product.product_variants.each do |variant| %>
+            <tr>
+              <td><code class="small"><%= variant.sku %></code></td>
+              <td><%= variant.color.presence || "—" %></td>
+              <td><%= variant.size.presence || "—" %></td>
+              <td>
+                <% if variant.stock > 0 %>
+                  <span class="text-success fw-medium"><%= variant.stock %></span>
+                <% else %>
+                  <span class="text-danger fw-medium">0</span>
+                <% end %>
+              </td>
+              <td><%= format_price(variant.effective_price_cents) %></td>
+              <td class="text-end">
+                <%= link_to "Düzenle", edit_admin_product_variant_path(variant.id), class: "btn btn-admin-outline btn-sm" %>
+                <%= button_to "Sil", admin_product_variant_path(variant.id), method: :delete, class: "btn btn-admin-ghost btn-sm text-danger", form: { data: { turbo_confirm: "Varyant silinsin mi?" } } %>
+              </td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+  <% else %>
+    <div class="admin-empty">
+      <p class="mb-2">Henüz varyant eklenmemiş.</p>
+      <%= link_to "Varyant Ekle", new_admin_product_product_variant_path(@product.id), class: "btn btn-admin-primary btn-sm" %>
+    </div>
+  <% end %>
+</div>

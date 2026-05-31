@@ -1,0 +1,9 @@
+<% content_for :title, "Yeni Ürün" %>
+
+<%= render "admin/shared/page_header", title: "Yeni Ürün", subtitle: "Mağazaya yeni ürün ekleyin" %>
+
+<div class="admin-card admin-form-card">
+  <div class="admin-card__body">
+    <%= render "form", product: @product, categories: @categories %>
+  </div>
+</div>

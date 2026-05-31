@@ -1,0 +1,42 @@
+<footer class="sf-footer" role="contentinfo">
+  <div class="container-store">
+    <div class="row g-5">
+      <div class="col-md-4">
+        <p class="sf-footer__brand"><%= site_settings.site_name.upcase %></p>
+        <p class="sf-text-muted small mb-0" style="max-width:20rem">
+          <%= site_settings.tagline %>
+        </p>
+      </div>
+      <div class="col-6 col-md-2">
+        <p class="fw-semibold small mb-3">Alışveriş</p>
+        <ul class="sf-footer__links">
+          <li><%= link_to "Yeni Gelenler", products_path(sort: "new") %></li>
+          <li><%= link_to "Tüm Ürünler", products_path %></li>
+          <li><%= link_to "Kategoriler", categories_path %></li>
+        </ul>
+      </div>
+      <div class="col-6 col-md-2">
+        <p class="fw-semibold small mb-3">Hesap</p>
+        <ul class="sf-footer__links">
+          <% if authenticated? %>
+            <li><%= link_to "Siparişlerim", orders_path %></li>
+            <li><%= link_to "Adreslerim", addresses_path %></li>
+          <% else %>
+            <li><%= link_to "Giriş Yap", new_session_path %></li>
+            <li><%= link_to "Kayıt Ol", new_registration_path %></li>
+          <% end %>
+        </ul>
+      </div>
+      <div class="col-md-4">
+        <p class="fw-semibold small mb-3">Bülten</p>
+        <p class="sf-text-muted small"><%= site_settings.newsletter_body %></p>
+        <form class="input-group input-group-sm" action="#" onsubmit="return false" aria-label="E-posta bülteni">
+          <input type="email" class="form-control" placeholder="E-posta adresiniz" aria-label="E-posta">
+          <button class="btn btn-sf-primary" type="submit">Abone Ol</button>
+        </form>
+      </div>
+    </div>
+    <hr class="my-5 border-secondary-subtle">
+    <p class="sf-text-soft small text-center mb-0">&copy; <%= Time.current.year %> <%= site_settings.site_name %>. Tüm hakları saklıdır.</p>
+  </div>
+</footer>

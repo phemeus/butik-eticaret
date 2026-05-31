@@ -1,0 +1,9 @@
+<% content_for :title, "Blok Düzenle" %>
+
+<%= render "admin/shared/page_header", title: "Blok Düzenle", subtitle: @content_block.title %>
+
+<div class="admin-card admin-form-card">
+  <div class="admin-card__body">
+    <%= render "form", content_block: @content_block %>
+  </div>
+</div>

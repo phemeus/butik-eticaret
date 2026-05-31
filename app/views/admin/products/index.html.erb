@@ -1,0 +1,59 @@
+<% content_for :title, "Ürünler" %>
+
+<%= render "admin/shared/page_header", title: "Ürünler", subtitle: "#{@products.size} ürün listeleniyor" do %>
+  <%= link_to new_admin_product_path, class: "btn btn-admin-primary" do %>
+    <i class="bi bi-plus-lg me-1" aria-hidden="true"></i> Yeni Ürün
+  <% end %>
+<% end %>
+
+<div class="admin-card admin-card--flush">
+  <% if @products.any? %>
+    <div class="table-responsive">
+      <table class="admin-table">
+        <thead>
+          <tr>
+            <th>Ürün</th>
+            <th>Kategori</th>
+            <th>Fiyat</th>
+            <th>Durum</th>
+            <th class="text-end">İşlem</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @products.each do |product| %>
+            <tr>
+              <td class="fw-medium">
+                <%= product.name %>
+                <% if product.featured_active? %>
+                  <span class="badge bg-dark ms-1">Öne çıkan</span>
+                <% end %>
+                <% if product.new_arrival_active? %>
+                  <span class="badge bg-primary ms-1">Yeni</span>
+                <% end %>
+              </td>
+              <td><%= product.category.name %></td>
+              <td><%= format_price(product.price_cents) %></td>
+              <td>
+                <% if product.active? %>
+                  <span class="badge bg-success-subtle text-success">Aktif</span>
+                <% else %>
+                  <span class="badge bg-secondary-subtle text-secondary">Pasif</span>
+                <% end %>
+              </td>
+              <td class="text-end">
+                <%= link_to "Detay", admin_product_path(product.id), class: "btn btn-admin-ghost btn-sm" %>
+                <%= link_to "Düzenle", edit_admin_product_path(product.id), class: "btn btn-admin-outline btn-sm" %>
+              </td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+  <% else %>
+    <div class="admin-empty">
+      <i class="bi bi-bag d-block" aria-hidden="true"></i>
+      <p class="mb-2">Henüz ürün yok.</p>
+      <%= link_to "İlk ürünü ekle", new_admin_product_path, class: "btn btn-admin-primary btn-sm" %>
+    </div>
+  <% end %>
+</div>

@@ -1,0 +1,36 @@
+<% content_for :title, "Dashboard" %>
+
+<%= render "admin/shared/page_header", title: "Dashboard", subtitle: "Mağaza özeti ve hızlı erişim" %>
+
+<div class="row g-3 mb-4">
+  <div class="col-sm-4">
+    <%= render "admin/shared/stat_card", label: "Toplam Ürün", value: @product_count, icon: "bag" %>
+  </div>
+  <div class="col-sm-4">
+    <%= render "admin/shared/stat_card", label: "Toplam Sipariş", value: @order_count, icon: "receipt" %>
+  </div>
+  <div class="col-sm-4">
+    <%= render "admin/shared/stat_card", label: "Bekleyen Sipariş", value: @pending_orders, icon: "clock" %>
+  </div>
+</div>
+
+<div class="admin-card">
+  <div class="admin-card__header">Hızlı İşlemler</div>
+  <div class="admin-card__body d-flex flex-wrap gap-2">
+    <%= link_to admin_products_path, class: "btn btn-admin-primary" do %>
+      <i class="bi bi-plus-lg me-1" aria-hidden="true"></i> Ürün Yönet
+    <% end %>
+    <%= link_to new_admin_product_path, class: "btn btn-admin-outline" do %>
+      Yeni Ürün Ekle
+    <% end %>
+    <%= link_to admin_orders_path, class: "btn btn-admin-outline" do %>
+      Siparişleri Gör
+    <% end %>
+    <%= link_to admin_categories_path, class: "btn btn-admin-outline" do %>
+      Kategoriler
+    <% end %>
+    <%= link_to admin_reports_path, class: "btn btn-admin-outline" do %>
+      Raporlar
+    <% end %>
+  </div>
+</div>

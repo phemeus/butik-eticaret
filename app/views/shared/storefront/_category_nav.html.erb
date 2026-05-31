@@ -1,0 +1,15 @@
+<nav class="sf-catnav" aria-label="Kategoriler">
+  <ul class="sf-catnav__list container-store">
+    <li>
+      <%= link_to "Yeni Gelenler", products_path(sort: "new"), class: "sf-catnav__link #{'is-active' if params[:sort] == 'new'}" %>
+    </li>
+    <% @categories.each do |category| %>
+      <li>
+        <%= link_to category.name, category_path(category), class: "sf-catnav__link #{'is-active' if params[:controller] == 'categories' && params[:slug] == category.slug}", data: { turbo_prefetch: true } %>
+      </li>
+    <% end %>
+    <li>
+      <%= link_to "Tüm Ürünler", products_path, class: "sf-catnav__link #{'is-active' if params[:controller] == 'products' && params[:action] == 'index' && params[:sort].blank?}" %>
+    </li>
+  </ul>
+</nav>

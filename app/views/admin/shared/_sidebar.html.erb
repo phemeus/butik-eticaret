@@ -1,0 +1,28 @@
+<aside class="admin-sidebar" id="adminSidebar" aria-label="Admin menü" data-admin-target="sidebar">
+  <div class="admin-sidebar__brand">
+    <%= link_to admin_root_path, class: "admin-sidebar__logo" do %>
+      BUTIK
+      <span>Admin Panel</span>
+    <% end %>
+  </div>
+
+  <nav>
+    <ul class="admin-nav">
+      <li><%= admin_nav_link :dashboard, "Dashboard", admin_root_path, icon: "speedometer2" %></li>
+      <li><%= admin_nav_link :products, "Ürünler", admin_products_path, icon: "bag" %></li>
+      <li><%= admin_nav_link :categories, "Kategoriler", admin_categories_path, icon: "tags" %></li>
+      <li><%= admin_nav_link :orders, "Siparişler", admin_orders_path, icon: "receipt" %></li>
+      <li><%= admin_nav_link :content_blocks, "Ana Sayfa", admin_content_blocks_path, icon: "layout-text-window" %></li>
+      <li><%= admin_nav_link :site_settings, "Ayarlar", edit_admin_site_settings_path, icon: "gear" %></li>
+      <li><%= admin_nav_link :coupons, "Kuponlar", admin_coupons_path, icon: "ticket-perforated" %></li>
+      <li><%= admin_nav_link :reports, "Raporlar", admin_reports_path, icon: "bar-chart" %></li>
+    </ul>
+  </nav>
+
+  <div class="admin-sidebar__footer">
+    <%= link_to root_path do %>
+      <i class="bi bi-shop" aria-hidden="true"></i>
+      Mağazaya Dön
+    <% end %>
+  </div>
+</aside>

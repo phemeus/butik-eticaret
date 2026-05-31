@@ -1,0 +1,33 @@
+<%= form_with model: variant,
+      url: variant.persisted? ? admin_product_variant_path(variant.id) : admin_product_product_variants_path(product.id),
+      method: variant.persisted? ? :patch : :post do |f| %>
+  <% if variant.errors.any? %>
+    <div class="alert alert-danger border-0"><%= variant.errors.full_messages.to_sentence %></div>
+  <% end %>
+  <div class="row g-3">
+    <div class="col-sm-6">
+      <%= f.label :sku, "SKU", class: "form-label" %>
+      <%= f.text_field :sku, class: "form-control", required: true %>
+    </div>
+    <div class="col-sm-6">
+      <%= f.label :stock, "Stok", class: "form-label" %>
+      <%= f.number_field :stock, min: 0, class: "form-control", required: true %>
+    </div>
+    <div class="col-sm-6">
+      <%= f.label :color, "Renk", class: "form-label" %>
+      <%= f.text_field :color, class: "form-control" %>
+    </div>
+    <div class="col-sm-6">
+      <%= f.label :size, "Beden", class: "form-label" %>
+      <%= f.text_field :size, class: "form-control" %>
+    </div>
+    <div class="col-sm-6">
+      <%= f.label :price, "Fiyat (TL, opsiyonel)", class: "form-label" %>
+      <%= f.number_field :price, step: 0.01, min: 0, class: "form-control", placeholder: "Ürün fiyatı kullanılır" %>
+    </div>
+  </div>
+  <div class="d-flex gap-2 mt-4">
+    <%= f.submit "Kaydet", class: "btn btn-admin-primary" %>
+    <%= link_to "İptal", admin_product_path(product.id), class: "btn btn-admin-ghost" %>
+  </div>
+<% end %>

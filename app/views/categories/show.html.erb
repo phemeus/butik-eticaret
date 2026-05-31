@@ -1,0 +1,25 @@
+<% content_for :title, @category.seo_title %>
+<% content_for :meta_description, @category.seo_description %>
+
+<div class="container-store storefront-page">
+<h1 class="h2 mb-1"><%= @category.name %></h1>
+<p class="text-muted mb-4"><%= @products.count %> ürün</p>
+
+<div class="row g-4">
+  <% @products.each do |product| %>
+    <div class="col-md-4">
+      <div class="card product-card h-100 border-0 shadow-sm">
+        <% if product.images.attached? %>
+          <%= link_to product_path(product) do %>
+            <%= attachment_image_tag product.images.first, resize: [400, 500], class: "card-img-top", alt: product.name %>
+          <% end %>
+        <% end %>
+        <div class="card-body">
+          <h2 class="h5"><%= link_to product.name, product_path(product), class: "text-decoration-none text-dark" %></h2>
+          <p class="fw-semibold mb-0"><%= format_price(product.display_price_cents) %></p>
+        </div>
+      </div>
+    </div>
+  <% end %>
+</div>
+</div>

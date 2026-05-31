@@ -1,0 +1,14 @@
+<article class="product-card h-100">
+  <div class="product-card__media">
+    <%= link_to product_path(product), tabindex: "-1", aria: { hidden: true }, data: { turbo_prefetch: true } do %>
+      <%= product_image(product) %>
+    <% end %>
+    <%= product_card_badge(product) %>
+    <button type="button" class="product-card__fav" aria-label="Favorilere ekle (yakında)" disabled>
+      <i class="bi bi-heart" aria-hidden="true"></i>
+    </button>
+  </div>
+  <p class="product-card__category mb-0"><%= product.category.name %></p>
+  <%= link_to product.name, product_path(product), class: "product-card__name", data: { turbo_prefetch: true } %>
+  <p class="product-card__price mb-0"><%= format_price(product.display_price_cents) %></p>
+</article>

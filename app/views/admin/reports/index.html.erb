@@ -1,0 +1,75 @@
+<% content_for :title, "Raporlar" %>
+
+<%= render "admin/shared/page_header",
+      title: "Raporlar",
+      subtitle: "#{l(@month_start, format: '%B %Y')} özeti" %>
+
+<div class="row g-3 mb-4">
+  <div class="col-md-4">
+    <%= render "admin/shared/stat_card", label: "Aylık Ciro", value: format_price(@month_revenue_cents), icon: "cash-stack" %>
+  </div>
+  <div class="col-md-4">
+    <%= render "admin/shared/stat_card", label: "Aylık Sipariş", value: @month_order_count, icon: "receipt" %>
+  </div>
+  <div class="col-md-4">
+    <%= render "admin/shared/stat_card", label: "Bekleyen Stok Bildirimi", value: @pending_stock_notifications, icon: "bell" %>
+  </div>
+</div>
+
+<div class="row g-4">
+  <div class="col-lg-7">
+    <div class="admin-card admin-card--flush">
+      <div class="admin-card__header">En Çok Satan Ürünler (bu ay)</div>
+      <% if @top_products.any? %>
+        <div class="table-responsive">
+          <table class="admin-table">
+            <thead>
+              <tr>
+                <th>Ürün</th>
+                <th class="text-end">Ciro</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% @top_products.each do |name, cents| %>
+                <tr>
+                  <td class="fw-medium"><%= name %></td>
+                  <td class="text-end"><%= format_price(cents) %></td>
+                </tr>
+              <% end %>
+            </tbody>
+          </table>
+        </div>
+      <% else %>
+        <div class="admin-empty"><p class="mb-0">Bu ay henüz satış yok.</p></div>
+      <% end %>
+    </div>
+  </div>
+
+  <div class="col-lg-5">
+    <div class="admin-card admin-card--flush mb-4">
+      <div class="admin-card__header">Düşük Stok (≤ 3)</div>
+      <% if @low_stock_variants.any? %>
+        <ul class="list-group list-group-flush">
+          <% @low_stock_variants.each do |variant| %>
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+              <%= link_to variant.product.name, admin_product_path(variant.product_id), class: "text-decoration-none" %>
+              <span class="badge bg-warning-subtle text-warning-emphasis"><%= variant.stock %> adet</span>
+            </li>
+          <% end %>
+        </ul>
+      <% else %>
+        <div class="admin-empty"><p class="mb-0">Düşük stoklu varyant yok.</p></div>
+      <% end %>
+    </div>
+
+    <div class="admin-card">
+      <div class="admin-card__body small text-muted">
+        Aktif kupon: <strong><%= @active_coupons_count %></strong>
+      </div>
+    </div>
+  </div>
+</div>
+
+<p class="text-muted small mt-4">
+  Sanal POS ve kargo entegrasyonları sonraki aşamada eklenecek.
+</p>

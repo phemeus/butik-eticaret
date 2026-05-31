@@ -1,0 +1,116 @@
+<% content_for :title, "Site Ayarları" %>
+
+<%= render "admin/shared/page_header",
+      title: "Site Ayarları",
+      subtitle: "Mağaza görünümü, ana sayfa ve ürün sayfası tercihleri" %>
+
+<%= form_with model: @site_setting,
+      url: admin_site_settings_path,
+      method: :patch,
+      html: { multipart: true } do |f| %>
+  <% if @site_setting.errors.any? %>
+    <div class="alert alert-danger border-0"><%= @site_setting.errors.full_messages.to_sentence %></div>
+  <% end %>
+
+  <div class="row g-4">
+    <div class="col-lg-6">
+      <div class="admin-card mb-4">
+        <div class="admin-card__header">Genel</div>
+        <div class="admin-card__body">
+          <div class="mb-3">
+            <%= f.label :site_name, "Site adı", class: "form-label" %>
+            <%= f.text_field :site_name, class: "form-control", required: true %>
+          </div>
+          <div class="mb-3">
+            <%= f.label :tagline, "Kısa açıklama (footer)", class: "form-label" %>
+            <%= f.text_area :tagline, class: "form-control", rows: 2 %>
+          </div>
+          <div class="mb-0">
+            <%= f.label :contact_email, "İletişim e-postası", class: "form-label" %>
+            <%= f.email_field :contact_email, class: "form-control", placeholder: "info@butik.com" %>
+          </div>
+        </div>
+      </div>
+
+      <div class="admin-card mb-4">
+        <div class="admin-card__header">Mağaza</div>
+        <div class="admin-card__body">
+          <div class="mb-3">
+            <%= f.label :free_shipping_threshold, "Ücretsiz kargo eşiği (TL)", class: "form-label" %>
+            <%= f.number_field :free_shipping_threshold, step: 0.01, min: 0, class: "form-control" %>
+            <div class="form-text">Güven bandı metinlerini Ana Sayfa menüsünden ayrıca düzenleyebilirsin.</div>
+          </div>
+          <div class="mb-3">
+            <%= f.label :newsletter_title, "Bülten başlığı", class: "form-label" %>
+            <%= f.text_field :newsletter_title, class: "form-control" %>
+          </div>
+          <div class="mb-0">
+            <%= f.label :newsletter_body, "Bülten açıklaması", class: "form-label" %>
+            <%= f.text_area :newsletter_body, class: "form-control", rows: 2 %>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-lg-6">
+      <div class="admin-card mb-4">
+        <div class="admin-card__header">Ana Sayfa Hero</div>
+        <div class="admin-card__body">
+          <div class="mb-3">
+            <%= f.label :hero_eyebrow, "Üst etiket", class: "form-label" %>
+            <%= f.text_field :hero_eyebrow, class: "form-control" %>
+          </div>
+          <div class="mb-3">
+            <%= f.label :hero_title, "Başlık", class: "form-label" %>
+            <%= f.text_field :hero_title, class: "form-control" %>
+          </div>
+          <div class="mb-3">
+            <%= f.label :hero_description, "Açıklama", class: "form-label" %>
+            <%= f.text_area :hero_description, class: "form-control", rows: 3 %>
+          </div>
+          <div class="mb-0">
+            <%= f.label :hero_image, "Arka plan görseli", class: "form-label" %>
+            <%= f.file_field :hero_image, class: "form-control", accept: "image/*" %>
+            <% if @site_setting.hero_image.attached? %>
+              <div class="mt-3">
+                <%= attachment_image_tag @site_setting.hero_image, resize: [ 320, 180 ], resize_mode: :limit, class: "rounded border", alt: "Hero görseli" %>
+              </div>
+            <% end %>
+          </div>
+        </div>
+      </div>
+
+      <div class="admin-card mb-4">
+        <div class="admin-card__header">Ürün Detay Sayfası</div>
+        <div class="admin-card__body">
+          <%= f.label :pdp_layout, "Galeri düzeni", class: "form-label" %>
+          <div class="vstack gap-2">
+            <% SiteSetting.pdp_layouts.each do |key, _value| %>
+              <div class="form-check">
+                <%= f.radio_button :pdp_layout, key, class: "form-check-input", id: "site_setting_pdp_layout_#{key}" %>
+                <%= label_tag "site_setting_pdp_layout_#{key}", class: "form-check-label" do %>
+                  <span class="fw-medium"><%= key == "full_width" ? "Tam genişlik" : "Yan yana" %></span>
+                  <span class="d-block small text-muted">
+                    <% if key == "full_width" %>
+                      Ana sayfa gibi üstte geniş galeri, altta ürün bilgileri.
+                    <% else %>
+                      Sol tarafta kompakt galeri, sağda ürün bilgileri.
+                    <% end %>
+                  </span>
+                <% end %>
+              </div>
+            <% end %>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="d-flex gap-2">
+    <%= f.submit "Kaydet", class: "btn btn-admin-primary" %>
+  </div>
+<% end %>
+
+<p class="text-muted small mt-4">
+  Güven bandı blokları için <%= link_to "Ana Sayfa", admin_content_blocks_path %> menüsünü kullan.
+</p>

@@ -1,0 +1,54 @@
+<%# locals: (product:, layout: :sidebar) %>
+<% layout = local_assigns.fetch(:layout, :sidebar) %>
+<% gallery_class = layout == :full_width ? "product-gallery--full-width" : "product-gallery--sidebar" %>
+<% main_size = layout == :full_width ? [ 1400, 700 ] : [ 640, 800 ] %>
+
+<% if product.images.attached? %>
+  <% multi = product.images.many? %>
+  <div id="productGallery" class="product-gallery <%= gallery_class %> <%= multi ? 'carousel slide' : 'product-gallery--single' %>">
+    <div class="<%= multi ? 'carousel-inner' : '' %>">
+      <% product.images.each_with_index do |image, index| %>
+        <div class="<%= multi ? 'carousel-item' : '' %> <%= 'active' if multi && index.zero? %>">
+          <%= attachment_image_tag image,
+                resize: main_size,
+                resize_mode: :limit,
+                class: "product-gallery__main-img",
+                alt: product.name %>
+        </div>
+      <% end %>
+    </div>
+
+    <% if multi %>
+      <div class="carousel-indicators product-gallery__thumbs">
+        <% product.images.each_with_index do |image, index| %>
+          <button type="button"
+                  data-bs-target="#productGallery"
+                  data-bs-slide-to="<%= index %>"
+                  class="<%= 'active' if index.zero? %>"
+                  aria-current="<%= index.zero? ? 'true' : 'false' %>"
+                  aria-label="Görsel <%= index + 1 %>">
+            <%= attachment_image_tag image,
+                  resize: [ 72, 90 ],
+                  resize_mode: :limit,
+                  alt: "",
+                  class: "product-gallery__thumb-img",
+                  loading: "lazy" %>
+          </button>
+        <% end %>
+      </div>
+
+      <button class="carousel-control-prev product-gallery__control" type="button" data-bs-target="#productGallery" data-bs-slide="prev">
+        <span class="product-gallery__control-icon" aria-hidden="true"><i class="bi bi-chevron-left"></i></span>
+        <span class="visually-hidden">Önceki görsel</span>
+      </button>
+      <button class="carousel-control-next product-gallery__control" type="button" data-bs-target="#productGallery" data-bs-slide="next">
+        <span class="product-gallery__control-icon" aria-hidden="true"><i class="bi bi-chevron-right"></i></span>
+        <span class="visually-hidden">Sonraki görsel</span>
+      </button>
+    <% end %>
+  </div>
+<% else %>
+  <div class="product-gallery__empty <%= gallery_class %>" role="img" aria-label="<%= product.name %> — görsel yok">
+    <i class="bi bi-image" aria-hidden="true"></i>
+  </div>
+<% end %>

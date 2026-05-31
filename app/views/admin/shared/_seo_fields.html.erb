@@ -1,0 +1,14 @@
+<%# locals: (form:) %>
+<div class="admin-card mb-4">
+  <div class="admin-card__header">SEO</div>
+  <div class="admin-card__body">
+    <div class="mb-3">
+      <%= form.label :meta_title, "Meta başlık", class: "form-label" %>
+      <%= form.text_field :meta_title, class: "form-control", placeholder: "Boş bırakılırsa ad kullanılır" %>
+    </div>
+    <div class="mb-0">
+      <%= form.label :meta_description, "Meta açıklama", class: "form-label" %>
+      <%= form.text_area :meta_description, class: "form-control", rows: 2, maxlength: 320, placeholder: "Arama sonuçları için kısa açıklama (max 320 karakter)" %>
+    </div>
+  </div>
+</div>

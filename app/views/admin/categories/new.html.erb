@@ -1,0 +1,9 @@
+<% content_for :title, "Yeni Kategori" %>
+
+<%= render "admin/shared/page_header", title: "Yeni Kategori" %>
+
+<div class="admin-card admin-form-card">
+  <div class="admin-card__body">
+    <%= render "form", category: @category %>
+  </div>
+</div>

@@ -1,0 +1,26 @@
+<%# locals: (product:) %>
+<% notify_variants = product.out_of_stock_variants %>
+<% if notify_variants.any? %>
+  <div class="pdp__stock-notify mt-4 p-4 rounded border bg-white">
+    <h2 class="h6 mb-2">Stokta yok mu?</h2>
+    <p class="small text-muted mb-3">Stok gelince e-posta ile haber verelim.</p>
+
+    <%= form_with url: stock_notifications_path, class: "row g-2 align-items-end" do %>
+      <div class="col-md-5">
+        <label class="form-label small">Varyant</label>
+        <%= select_tag :product_variant_id,
+              options_from_collection_for_select(notify_variants, :id, :label),
+              class: "form-select form-select-sm" %>
+      </div>
+      <% unless authenticated? %>
+        <div class="col-md-4">
+          <label class="form-label small">E-posta</label>
+          <%= email_field_tag :email, nil, class: "form-control form-control-sm", required: true, placeholder: "ornek@email.com" %>
+        </div>
+      <% end %>
+      <div class="col-md-3">
+        <%= submit_tag "Haber Ver", class: "btn btn-sf-outline btn-sm w-100" %>
+      </div>
+    <% end %>
+  </div>
+<% end %>

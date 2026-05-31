@@ -1,0 +1,54 @@
+<% content_for :title, "Kuponlar" %>
+
+<%= render "admin/shared/page_header", title: "Kuponlar", subtitle: "İndirim kodları" do %>
+  <%= link_to new_admin_coupon_path, class: "btn btn-admin-primary" do %>
+    <i class="bi bi-plus-lg me-1" aria-hidden="true"></i> Yeni Kupon
+  <% end %>
+<% end %>
+
+<div class="admin-card admin-card--flush">
+  <% if @coupons.any? %>
+    <div class="table-responsive">
+      <table class="admin-table">
+        <thead>
+          <tr>
+            <th>Kod</th>
+            <th>İndirim</th>
+            <th>Min. sepet</th>
+            <th>Kullanım</th>
+            <th>Bitiş</th>
+            <th>Durum</th>
+            <th class="text-end">İşlem</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @coupons.each do |coupon| %>
+            <tr>
+              <td><code><%= coupon.code %></code></td>
+              <td><%= coupon.label %></td>
+              <td><%= coupon.minimum_order_cents.positive? ? format_price(coupon.minimum_order_cents) : "—" %></td>
+              <td><%= coupon.times_used %><%= "/#{coupon.max_uses}" if coupon.max_uses %></td>
+              <td><%= coupon.expires_at ? l(coupon.expires_at, format: :short) : "—" %></td>
+              <td>
+                <% if coupon.active? && !coupon.expired? && !coupon.maxed_out? %>
+                  <span class="badge bg-success-subtle text-success">Aktif</span>
+                <% else %>
+                  <span class="badge bg-secondary-subtle text-secondary">Pasif</span>
+                <% end %>
+              </td>
+              <td class="text-end">
+                <%= link_to "Düzenle", edit_admin_coupon_path(coupon), class: "btn btn-admin-outline btn-sm" %>
+                <%= button_to "Sil", admin_coupon_path(coupon), method: :delete, class: "btn btn-admin-ghost btn-sm text-danger", form: { data: { turbo_confirm: "Silinsin mi?" } } %>
+              </td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+  <% else %>
+    <div class="admin-empty">
+      <p class="mb-2">Henüz kupon yok.</p>
+      <%= link_to "İlk kuponu oluştur", new_admin_coupon_path, class: "btn btn-admin-primary btn-sm" %>
+    </div>
+  <% end %>
+</div>

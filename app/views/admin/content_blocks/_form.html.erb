@@ -1,0 +1,34 @@
+<%= form_with model: content_block, url: content_block.persisted? ? admin_content_block_path(content_block) : admin_content_blocks_path do |f| %>
+  <% if content_block.errors.any? %>
+    <div class="alert alert-danger border-0"><%= content_block.errors.full_messages.to_sentence %></div>
+  <% end %>
+
+  <div class="mb-3">
+    <%= f.label :title, "Başlık", class: "form-label" %>
+    <%= f.text_field :title, class: "form-control", required: true, placeholder: "Hızlı Kargo" %>
+  </div>
+  <div class="mb-3">
+    <%= f.label :body, "Açıklama", class: "form-label" %>
+    <%= f.text_field :body, class: "form-control", placeholder: "500₺ üzeri ücretsiz teslimat" %>
+  </div>
+  <div class="row g-3 mb-4">
+    <div class="col-sm-6">
+      <%= f.label :icon, "İkon", class: "form-label" %>
+      <%= f.select :icon, ContentBlock::ICON_OPTIONS.map { |i| [ i.humanize, i ] }, {}, class: "form-select" %>
+    </div>
+    <div class="col-sm-3">
+      <%= f.label :position, "Sıra", class: "form-label" %>
+      <%= f.number_field :position, min: 0, class: "form-control" %>
+    </div>
+    <div class="col-sm-3 d-flex align-items-end">
+      <div class="form-check form-switch mb-2">
+        <%= f.check_box :active, class: "form-check-input", role: "switch" %>
+        <%= f.label :active, "Aktif", class: "form-check-label" %>
+      </div>
+    </div>
+  </div>
+  <div class="d-flex gap-2">
+    <%= f.submit "Kaydet", class: "btn btn-admin-primary" %>
+    <%= link_to "İptal", admin_content_blocks_path, class: "btn btn-admin-ghost" %>
+  </div>
+<% end %>

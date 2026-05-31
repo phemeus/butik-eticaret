@@ -1,0 +1,28 @@
+<h1 class="h2 mb-4">Siparişlerim</h1>
+
+<div class="table-responsive bg-white rounded shadow-sm">
+  <table class="table mb-0">
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>Tarih</th>
+        <th>Durum</th>
+        <th>Ödeme</th>
+        <th>Toplam</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @orders.each do |order| %>
+        <tr>
+          <td><%= order.id %></td>
+          <td><%= l(order.created_at, format: :short) %></td>
+          <td><%= order_status_badge(order.status) %></td>
+          <td><%= payment_status_badge(order.payment.status) %></td>
+          <td><%= format_price(order.total_cents) %></td>
+          <td><%= link_to "Detay", order_path(order), class: "btn btn-sm btn-outline-dark" %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>

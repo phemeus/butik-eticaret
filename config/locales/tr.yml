@@ -1,0 +1,24 @@
+tr:
+  time:
+    formats:
+      short: "%d.%m.%Y %H:%M"
+      long: "%d %B %Y %H:%M"
+  date:
+    formats:
+      short: "%d.%m.%Y"
+  activerecord:
+    attributes:
+      order:
+        status:
+          pending: Beklemede
+          confirmed: Onaylandı
+          preparing: Hazırlanıyor
+          shipped: Kargoda
+          delivered: Teslim Edildi
+          cancelled: İptal
+      payment:
+        status:
+          pending: Beklemede
+          paid: Ödendi
+          failed: Başarısız
+          refunded: İade Edildi

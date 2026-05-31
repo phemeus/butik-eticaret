@@ -1,0 +1,58 @@
+<% content_for :title, "Ana Sayfa Blokları" %>
+
+<%= render "admin/shared/page_header",
+      title: "Güven Bandı",
+      subtitle: "Ana sayfadaki kargo, iade, ödeme alanları" do %>
+  <%= link_to new_admin_content_block_path, class: "btn btn-admin-primary" do %>
+    <i class="bi bi-plus-lg me-1" aria-hidden="true"></i> Yeni Blok
+  <% end %>
+<% end %>
+
+<div class="admin-card admin-card--flush">
+  <% if @content_blocks.any? %>
+    <div class="table-responsive">
+      <table class="admin-table">
+        <thead>
+          <tr>
+            <th>Sıra</th>
+            <th>İkon</th>
+            <th>Başlık</th>
+            <th>Açıklama</th>
+            <th>Durum</th>
+            <th class="text-end">İşlem</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @content_blocks.each do |block| %>
+            <tr>
+              <td><%= block.position %></td>
+              <td><i class="bi bi-<%= block.icon %>" aria-hidden="true"></i></td>
+              <td class="fw-medium"><%= block.title %></td>
+              <td class="text-muted small"><%= truncate(block.body, length: 60) %></td>
+              <td>
+                <% if block.active? %>
+                  <span class="badge bg-success-subtle text-success">Aktif</span>
+                <% else %>
+                  <span class="badge bg-secondary-subtle text-secondary">Pasif</span>
+                <% end %>
+              </td>
+              <td class="text-end">
+                <%= link_to "Düzenle", edit_admin_content_block_path(block), class: "btn btn-admin-outline btn-sm" %>
+                <%= button_to "Sil", admin_content_block_path(block), method: :delete, class: "btn btn-admin-ghost btn-sm text-danger", form: { data: { turbo_confirm: "Silinsin mi?" } } %>
+              </td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+  <% else %>
+    <div class="admin-empty">
+      <p class="mb-2">Henüz güven bandı bloğu yok.</p>
+      <%= link_to "İlk bloğu ekle", new_admin_content_block_path, class: "btn btn-admin-primary btn-sm" %>
+    </div>
+  <% end %>
+</div>
+
+<p class="text-muted small mt-3">
+  İkon adları Bootstrap Icons formatında girilir (ör. <code>truck</code>, <code>shield-check</code>).
+</p>
